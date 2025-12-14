@@ -27,3 +27,9 @@ def post_job(title: str, location: str, skills: str):
 def list_jobs():
     db = SessionLocal()
     return db.query(Job).all()
+@app.get("/")
+def home():
+    return {
+        "app": "Rojeasy Jobs",
+        "status": "Backend running 🚀"
+    }
