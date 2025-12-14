@@ -1,0 +1,31 @@
+<input id="name" placeholder="Full Name">
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<select id="role">
+  <option value="candidate">Candidate</option>
+  <option value="employer">Employer</option>
+</select>
+<button onclick="signup()">Create Account</button>
+
+<script>
+async function signup() {
+  const res = await fetch("https://rojeasy-jobs.onrender.com/signup", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      full_name: name.value,
+      email: email.value,
+      password: password.value,
+      role: role.value
+    })
+  });
+
+  const data = await res.json();
+  localStorage.setItem("token", data.access_token);
+
+  if (data.role === "candidate")
+    window.location = "/candidate-dashboard.html";
+  else
+    window.location = "/employer-dashboard.html";
+}
+</script>
