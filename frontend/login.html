@@ -2,14 +2,27 @@
 <input placeholder="Email">
 <input placeholder="Password">
 <button>Login</button>
-from auth import verify_password
-@app.post("/login")
-def login(email: str, password: str):
-    db = SessionLocal()
-    user = db.query(User).filter(User.email == email).first()
+<input id="email" placeholder="Email">
+<input id="password" type="password">
+<button onclick="login()">Login</button>
 
-    if not user or not verify_password(password, user.password):
-        raise HTTPException(status_code=401, detail="Invalid credentials")
+<script>
+async function login() {
+  const res = await fetch("https://rojeasy-jobs.onrender.com/login", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      email: email.value,
+      password: password.value
+    })
+  });
 
-    token = create_access_token({"sub": user.email, "role": user.role})
-    return {"access_token": token, "role": user.role}
+  const data = await res.json();
+  localStorage.setItem("token", data.access_token);
+
+  if (data.role === "candidate")
+    window.location = "/candidate-dashboard.html";
+  else
+    window.location = "/employer-dashboard.html";
+}
+</script>
