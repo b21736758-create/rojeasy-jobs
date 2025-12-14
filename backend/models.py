@@ -1,11 +1,14 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from database import Base
 
-class User(Base):
-    __tablename__ = "users"
+class Job(Base):
+    __tablename__ = "jobs"
 
     id = Column(Integer, primary_key=True, index=True)
-    full_name = Column(String, nullable=False)
-    email = Column(String, unique=True, index=True)
-    password = Column(String, nullable=False)
-    role = Column(String, nullable=False)  # candidate / employer
+    title = Column(String, nullable=False)
+    description = Column(Text, nullable=False)
+    location = Column(String)
+    experience = Column(String)
+    salary = Column(String)
+    job_type = Column(String)  # Full-time / Part-time / Remote
+    employer_id = Column(Integer, ForeignKey("users.id"))
